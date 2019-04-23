@@ -128,7 +128,7 @@ function markTaskAsCompleted(navigation, taskAvailableDays, taskAvailableTime) {
 
     if (date.isBetween(openingHour, closingHour)) {
       timeInOpeningRange = true;
-      return;
+      break;
     }
   }
 
@@ -138,10 +138,13 @@ function markTaskAsCompleted(navigation, taskAvailableDays, taskAvailableTime) {
   }
 
   let taskId = navigation.getParam('id', 0);
-  return fetch(`http://10.0.2.2:8080/task/${taskId}`,
+  fetch(`http://10.0.2.2:8080/task/${taskId}`,
     {
       method: 'PUT',
-      body: JSON.stringify({completed: true})
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ isCompleted: true })
     }
   )
   .then((response) => response.json())
